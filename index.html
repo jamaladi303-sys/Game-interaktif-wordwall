@@ -86,10 +86,11 @@
         .iframe-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; 
+            /* Menyesuaikan rasio Wordwall (500x380 = 76%) */
+            padding-bottom: 76%; 
             height: 0;
             overflow: hidden;
-            background-color: #eee; 
+            background-color: #fff; 
         }
         
         .iframe-container iframe {
@@ -99,38 +100,6 @@
             width: 100%;
             height: 100%;
             border: none;
-        }
-
-        /* Overlay Tombol Raksasa */
-        .play-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.85); 
-            z-index: 10; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            backdrop-filter: blur(3px); 
-        }
-        
-        .play-btn {
-            background-color: #4ECDC4;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.8rem;
-            border-radius: 50px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .play-overlay:hover .play-btn {
-            transform: scale(1.1); 
-            background-color: #45b8b0;
         }
 
         /* Warna Tiap Kartu */
@@ -171,9 +140,6 @@
         <div class="game-card card-1">
             <div class="game-title">🧩 Mencocokkan</div>
             <div class="iframe-container">
-                <div class="play-overlay" onclick="bukaLayarPenuh(this)">
-                    <div class="play-btn">▶️ MAIN FULL SCREEN</div>
-                </div>
                 <iframe src="https://wordwall.net/id/embed/c520b8dcc5b54039ae3102063e234ff8?themeId=1&templateId=46&fontStackId=0" allowfullscreen></iframe>
             </div>
         </div>
@@ -182,9 +148,6 @@
         <div class="game-card card-2">
             <div class="game-title">🌿 Bahan Jamu</div>
             <div class="iframe-container">
-                <div class="play-overlay" onclick="bukaLayarPenuh(this)">
-                    <div class="play-btn">▶️ MAIN FULL SCREEN</div>
-                </div>
                 <iframe src="https://wordwall.net/id/embed/a40a119a368f43299b3bd3692b0ac33e?themeId=2&templateId=5&fontStackId=0" allowfullscreen></iframe>
             </div>
         </div>
@@ -193,9 +156,6 @@
         <div class="game-card card-3">
             <div class="game-title">🔗 Pasangkan Jamu</div>
             <div class="iframe-container">
-                <div class="play-overlay" onclick="bukaLayarPenuh(this)">
-                    <div class="play-btn">▶️ MAIN FULL SCREEN</div>
-                </div>
                 <iframe src="https://wordwall.net/id/embed/0c362e2339a740c5a762703919e301e6?themeId=65&templateId=25&fontStackId=0" allowfullscreen></iframe>
             </div>
         </div>
@@ -204,9 +164,6 @@
         <div class="game-card card-4">
             <div class="game-title">🧺 Kelompokkan Jamu</div>
             <div class="iframe-container">
-                <div class="play-overlay" onclick="bukaLayarPenuh(this)">
-                    <div class="play-btn">▶️ MAIN FULL SCREEN</div>
-                </div>
                 <iframe src="https://wordwall.net/id/embed/838c49c2528e43f790a3cf114d97549a?themeId=2&templateId=2&fontStackId=0" allowfullscreen></iframe>
             </div>
         </div>
@@ -217,51 +174,6 @@
         <p>Dibuat dengan ❤️ untuk Anak Indonesia</p>
         <p>&copy; 2026 Portal Game Saya.</p>
     </footer>
-
-    <!-- JAVASCRIPT UNTUK LAYAR PENUH & BERHENTI OTOMATIS -->
-    <script>
-        // Fungsi untuk memaksa iframe masuk ke Layar Penuh
-        function bukaLayarPenuh(elemenOverlay) {
-            const wadah = elemenOverlay.parentElement;
-            const iframe = wadah.querySelector('iframe');
-
-            // 1. Minta browser masuk ke Layar Penuh
-            if (iframe.requestFullscreen) {
-                iframe.requestFullscreen();
-            } else if (iframe.webkitRequestFullscreen) { /* Untuk Safari */
-                iframe.webkitRequestFullscreen();
-            } else if (iframe.msRequestFullscreen) { /* Untuk Internet Explorer */
-                iframe.msRequestFullscreen();
-            }
-
-            // 2. Sembunyikan tombol raksasa
-            elemenOverlay.style.display = "none";
-        }
-
-        // Event pendeteksi ketika pengguna KELUAR dari Layar Penuh
-        document.addEventListener('fullscreenchange', deteksiKeluarLayar);
-        document.addEventListener('webkitfullscreenchange', deteksiKeluarLayar);
-
-        function deteksiKeluarLayar() {
-            // Jika sudah tidak di layar penuh...
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                
-                // 1. Munculkan kembali semua tombol raksasa
-                const semuaOverlay = document.querySelectorAll('.play-overlay');
-                semuaOverlay.forEach(overlay => {
-                    overlay.style.display = "flex";
-                });
-
-                // 2. Matikan paksa (reset) semua game agar suara tidak bocor
-                const semuaIframe = document.querySelectorAll('.iframe-container iframe');
-                semuaIframe.forEach(iframe => {
-                    let sumberSaatIni = iframe.src;
-                    iframe.src = ''; 
-                    iframe.src = sumberSaatIni; 
-                });
-            }
-        }
-    </script>
 
 </body>
 </html>
