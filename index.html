@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Game Ceria Anak Hebat</title>
-    <!-- FONT DARI GOOGLE FONTS -->
+    <!-- FONT RAMAH ANAK DARI GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,90 +12,119 @@
             font-family: 'Bubblegum Sans', cursive;
             background-color: #f0faff; 
             color: #333;
+            padding-bottom: 3rem;
         }
 
         header {
             background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
             color: white;
             text-align: center;
-            padding: 3rem 1rem; 
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 3.5rem 1rem; 
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             border-bottom-left-radius: 40px; 
             border-bottom-right-radius: 40px;
         }
 
         header h1 {
-            font-size: 3rem; 
+            font-size: 3.2rem; 
             margin-bottom: 0.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         header p {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: bold;
         }
 
+        /* GRID TOMBOL MENU UTAMA */
         .game-grid {
             display: grid;
-            /* Ukuran disesuaikan dengan standar Wordwall */
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem; 
-            padding: 0 1.5rem;
-            max-width: 1200px;
+            padding: 0 2rem;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
+        /* KARTU MENU YANG BISA DIKLIK */
         .game-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            border: 5px solid; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 6px solid; 
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
 
-        .game-title {
-            padding: 1rem;
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
         }
 
-        /* WADAH IFRAME SUPER STABIL */
-        .iframe-container {
-            width: 100%;
-            height: 380px; /* Menggunakan tinggi pasti bawaan Wordwall */
-            background-color: #fff; 
+        /* IKON BESAR UNTUK ANAK TK */
+        .game-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            background: #f9f9f9;
+            width: 120px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+            border-radius: 50%;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        /* Warna Tiap Kartu */
+        .game-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* TOMBOL MAIN DI DALAM KARTU */
+        .play-btn {
+            background-color: #4ECDC4;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-card:hover .play-btn {
+            background-color: #3dbdb5;
+        }
+
+        /* WARNA-WARNI KARTU BERBEDA */
         .card-1 { border-color: #FF6B6B; } 
-        .card-1 .game-title { background-color: #FF6B6B; }
+        .card-1 .play-btn { background-color: #FF6B6B; }
+        .card-1:hover .play-btn { background-color: #ff5252; }
 
         .card-2 { border-color: #4ECDC4; } 
-        .card-2 .game-title { background-color: #4ECDC4; }
+        .card-2 .play-btn { background-color: #4ECDC4; }
 
         .card-3 { border-color: #FFD93D; } 
-        .card-3 .game-title { background-color: #FFD93D; color: #333; } 
+        .card-3 .play-btn { background-color: #f6c23e; color: #fff; } 
 
         .card-4 { border-color: #FF8C42; } 
-        .card-4 .game-title { background-color: #FF8C42; }
+        .card-4 .play-btn { background-color: #FF8C42; }
+        .card-4:hover .play-btn { background-color: #fa7b2a; }
 
         footer {
             text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
+            padding: 2.5rem;
+            margin-top: 4rem;
             background-color: #FF99AC;
             color: white;
             font-size: 1.2rem;
@@ -108,42 +137,38 @@
 
     <header>
         <h1>Portal Game Ceria</h1>
-        <p>Ayo Main dan Belajar, Anak Hebat!</p>
+        <p>Silakan Pilih Game Favoritmu, Anak Hebat! ✨</p>
     </header>
 
     <main class="game-grid">
         
         <!-- GAME 1: Mencocokkan -->
-        <div class="game-card card-1">
-            <div class="game-title">🧩 Mencocokkan</div>
-            <div class="iframe-container">
-                <iframe src="https://wordwall.net/id/embed/c520b8dcc5b54039ae3102063e234ff8?themeId=1&templateId=46&fontStackId=0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-            </div>
-        </div>
+        <a href="https://wordwall.net/id/resource/c520b8dcc5b54039ae3102063e234ff8" target="_blank" class="game-card card-1">
+            <div class="game-icon">🧩</div>
+            <div class="game-title">Mencocokkan</div>
+            <div class="play-btn">▶️ MAIN</div>
+        </a>
 
         <!-- GAME 2: Bahan Jamu -->
-        <div class="game-card card-2">
-            <div class="game-title">🌿 Bahan Jamu</div>
-            <div class="iframe-container">
-                <iframe src="https://wordwall.net/id/embed/a40a119a368f43299b3bd3692b0ac33e?themeId=2&templateId=5&fontStackId=0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-            </div>
-        </div>
+        <a href="https://wordwall.net/id/resource/a40a119a368f43299b3bd3692b0ac33e" target="_blank" class="game-card card-2">
+            <div class="game-icon">🌿</div>
+            <div class="game-title">Bahan Jamu</div>
+            <div class="play-btn">▶️ MAIN</div>
+        </a>
 
         <!-- GAME 3: Pasangkan Bahan Jamu -->
-        <div class="game-card card-3">
-            <div class="game-title">🔗 Pasangkan Jamu</div>
-            <div class="iframe-container">
-                <iframe src="https://wordwall.net/id/embed/0c362e2339a740c5a762703919e301e6?themeId=65&templateId=25&fontStackId=0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-            </div>
-        </div>
+        <a href="https://wordwall.net/id/resource/0c362e2339a740c5a762703919e301e6" target="_blank" class="game-card card-3">
+            <div class="game-icon">🔗</div>
+            <div class="game-title">Pasangkan Jamu</div>
+            <div class="play-btn">▶️ MAIN</div>
+        </a>
 
         <!-- GAME 4: Kelompokkan Bahan Jamu -->
-        <div class="game-card card-4">
-            <div class="game-title">🧺 Kelompokkan Jamu</div>
-            <div class="iframe-container">
-                <iframe src="https://wordwall.net/id/embed/838c49c2528e43f790a3cf114d97549a?themeId=2&templateId=2&fontStackId=0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-            </div>
-        </div>
+        <a href="https://wordwall.net/id/resource/838c49c2528e43f790a3cf114d97549a" target="_blank" class="game-card card-4">
+            <div class="game-icon">🧺</div>
+            <div class="game-title">Kelompokkan Jamu</div>
+            <div class="play-btn">▶️ MAIN</div>
+        </a>
 
     </main>
 
