@@ -96,6 +96,7 @@
             font-family: inherit;
             border: none;
             cursor: pointer;
+            pointer-events: none; /* Mencegah klik ganda pada tombol */
         }
 
         /*====================
@@ -196,10 +197,10 @@
         =======================*/
         #loading {
             position: absolute;
-            top: 65px; /* Sesuaikan dengan tinggi toolbar */
+            top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% - 65px);
+            height: 100%;
             background: white;
             display: flex;
             flex-direction: column;
@@ -252,10 +253,6 @@
                 flex-wrap: wrap;
                 gap: 10px;
                 justify-content: center;
-            }
-            #loading {
-                top: 0;
-                height: 100%;
             }
         }
     </style>
@@ -313,13 +310,22 @@
         <div id="iframeContainer">
             <div id="loading">
                 <div class="spinner"></div>
-                Sedang membuka permainan...
+                Sedang menyiapkan permainan...
             </div>
-            <iframe id="iframeGame" allowfullscreen></iframe>
+            
+            <!-- Iframe disempurnakan atributnya agar tidak memantul ke tab baru -->
+            <iframe 
+                id="iframeGame" 
+                allow="fullscreen; autoplay; encrypted-media" 
+                webkitallowfullscreen="true" 
+                mozallowfullscreen="true" 
+                allowfullscreen="true" 
+                frameborder="0">
+            </iframe>
         </div>
     </div>
 
-    <!-- Script JavaScript untuk menjalankan fungsi interaktif -->
+    <!-- Script JavaScript -->
     <script>
         const gameView = document.getElementById('gameView');
         const iframeGame = document.getElementById('iframeGame');
@@ -328,9 +334,18 @@
         // Fungsi membuka game
         function openGame(url) {
             gameView.style.display = 'flex';
-            loading.style.display = 'flex'; // Tampilkan loading
+            loading.style.display = 'flex'; 
             iframeGame.src = url;
             
+            // Perintah untuk otomatis Full Screen saat game diklik
+            if (gameView.requestFullscreen) {
+                gameView.requestFullscreen().catch(err => console.log(err));
+            } else if (gameView.webkitRequestFullscreen) { /* Safari */
+                gameView.webkitRequestFullscreen();
+            } else if (gameView.msRequestFullscreen) { /* IE/Edge lama */
+                gameView.msRequestFullscreen();
+            }
+
             // Sembunyikan loading setelah iframe selesai memuat data
             iframeGame.onload = function() {
                 loading.style.display = 'none';
@@ -340,36 +355,42 @@
         // Fungsi menutup game
         function closeGame() {
             gameView.style.display = 'none';
-            iframeGame.src = ''; // Menghentikan game yang sedang berjalan di background
+            iframeGame.src = ''; // Hentikan game
             
-            // Keluar dari fullscreen jika sedang aktif
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
+            // Keluar dari fullscreen dengan dukungan berbagai browser
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
             }
         }
 
-        // Fungsi tombol home (sama dengan tutup game)
         function goHome() {
             closeGame();
         }
 
-        // Fungsi muat ulang (refresh game)
         function reloadGame() {
             loading.style.display = 'flex';
-            // Menyegarkan URL iframe agar memuat dari awal
             iframeGame.src = iframeGame.src;
         }
 
-        // Fungsi layar penuh (fullscreen)
         function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                // Meminta fullscreen pada kontainer gameView
-                gameView.requestFullscreen().catch(err => {
-                    alert(`Gagal membuka mode fullscreen: ${err.message}`);
-                });
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (gameView.requestFullscreen) {
+                    gameView.requestFullscreen().catch(err => console.log(err));
+                } else if (gameView.webkitRequestFullscreen) {
+                    gameView.webkitRequestFullscreen();
+                }
             } else {
-                // Keluar dari fullscreen
-                document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
             }
         }
     </script>
